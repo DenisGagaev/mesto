@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="./pages/index.css">
+	<title>Mesto</title>
+</head>
+
+<body class="body">
+	<header class="header">
+		<img src="./images/logo.png" alt="Logo" class="header__logo">
+	</header>
+
+	<main class="content">
+		<div class="profile content__profile">
+			<div class="profile__data">
+				<div class="profile__avatar"></div>
+				<div class="profile__info">
+					<h1 class="profile__name">Жак-Ив Кусто</h1>
+					<button type="button" class="profile__edit" aria-label="редактировать профиль"></button>
+					<p class="profile__text">Исследователь океана</p>
+				</div>
+			</div>
+			<button type="button" class="profile__add-buttom" aria-label="добавить фото"></button>
+		</div>
+
+		<article class="elements content__elements">
+			<div class="element">
+				<img class="element__image" src="./images/nikita-karimov-lvJZhHOIJJ4-unsplash (1).jpg" alt="Москва">
+				<div class="element__info">
+					<h2 class="element__text">Москва</h2>
+					<img class="element__like element__like_active" src="./images/like.png" alt="like">
+				</div>
+			</div>
+			<div class="element">
+				<img class="element__image" src="./images/matvey-yelkin-saint-petersburg (1).jpg" alt="Санкт-Петербург">
+				<div class="element__info">
+					<h2 class="element__text">Санкт-Петербург</h2>
+					<img class="element__like" src="./images/like.png" alt="like">
+				</div>
+			</div>
+			<div class="element">
+				<img class="element__image" src="./images/pavel-anoshin-vladivostok (1).jpg" alt="Владивосток">
+				<div class="element__info">
+					<h2 class="element__text">Владивосток</h2>
+					<img class="element__like" src="./images/like.png" alt="like">
+				</div>
+			</div>
+			<div class="element">
+				<img class="element__image" src="./images/artem-beliaikin-kurshkaya-kosa (1).jpg" alt="Куршская Коса">
+				<div class="element__info">
+					<h2 class="element__text">Куршская Коса</h2>
+					<img class="element__like" src="./images/like.png" alt="like">
+				</div>
+			</div>
+			<div class="element">
+				<img class="element__image" src="./images/dima-fedorov-sochi (1).jpg" alt="Сочи">
+				<div class="element__info">
+					<h2 class="element__text">Сочи</h2>
+					<img class="element__like" src="./images/like.png" alt="like">
+				</div>
+			</div>
+			<div class="element">
+				<img class="element__image" src="./images/sasha-yudaev-kazan (1).jpg" alt="Казань">
+				<div class="element__info">
+					<h2 class="element__text">Казань</h2>
+					<img class="element__like" src="./images/like.png" alt="like">
+				</div>
+			</div>
+		</article>
+	</main>
+	<footer class="footer">
+		<p class="footer__copyright">&#169; 2020 Mesto Russia</p>
+	</footer>
+	
+	<section class="popup">
+		<div class="popup__container">
+			<button type="button" aria-label="закрыть попап" class="popup__close"></button>
+			<h2 class="popup__header">Редактировать профиль</h2>
+			<form class="popup__form">
+			<input class="popup__input" type="text" required="required" minlength="3" id="nickname" value="Жак-Ив Кусто">
+			<input class="popup__input" type="text" required="required" id="aboutme" value="Исследователь океана">
+			<input type="submit" aria-label="кнопка сохранить" class="popup__save" value="Сохранить">
+			</form>
+		</div>
+	</section>
+
+	<script src="./scripts/main.js"></script>
+</body>
+
+</html>
