@@ -1,23 +1,26 @@
-.profile__add-buttom {
+.profile__add-button {
     background: url(../../../images/croos.svg) no-repeat;
     background-size: 22px 22px;
     background-position: center;
     width: 150px;
     height: 50px;
-    outline: 2px solid #fff;
+    outline: none;
+    border: 2px solid #fff;
     cursor: pointer;
-    border-width: 0;
     border-radius: 2px;
     transition: opacity .2s linear;
+    margin-left: 15px;
 }
-.profile__add-buttom:hover {
+
+.profile__add-button:hover {
     opacity: 0.6;
 }
 
 @media (max-width: 680px) {
-    .profile__add-buttom {
-    width: 100%;
-    max-width: 300px;
-    background-size: 16px 16px;
+    .profile__add-button {
+        margin-left: 0;
+        width: 100%;
+        max-width: 300px;
+        background-size: 16px 16px;
     }
 }

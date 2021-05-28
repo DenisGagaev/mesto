@@ -3,9 +3,4 @@
     width: 100%;
     max-height: 282px;
     object-fit: cover;
-    transition: transform .4s linear;
-    overflow: hidden;
-}
-.element__image:hover {
-    transform: scale(1.1);
 }

@@ -1,5 +1,4 @@
 .profile__text {
-    font-family: Inter;
     font-style: normal;
     font-weight: 400;
     font-size: 18px;
@@ -13,20 +12,20 @@
 
 @media (max-width: 750px) {
     .profile__text {
-    font-size: 15px;
-    line-height: 18px;
+        font-size: 15px;
+        line-height: 18px;
     }
 }
 
 @media (max-width: 680px) {
     .profile__text {
-    font-size: 14px;
-    line-height: 17px;
+        font-size: 14px;
+        line-height: 17px;
     }
 }
 
 @media (max-width: 450px) {
     .profile__text {
-    max-width: 250px;
+        max-width: 250px;
     }
 }

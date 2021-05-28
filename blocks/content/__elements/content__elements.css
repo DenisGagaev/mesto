@@ -1,17 +1,10 @@
 .content__elements {
-    max-width: 1179px;
+    max-width: 880px;
     margin: 51px auto 67px;
 }
-
-@media (max-width: 1300px) {
-    .content__elements {
-        max-width: 880px;
-        margin: 36px auto 48px;
-    }
-  }
 
 @media (max-width: 680px) {
     .content__elements {
         margin: 36px 0 48px;
     }
-  }
+}

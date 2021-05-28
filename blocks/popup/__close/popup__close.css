@@ -10,21 +10,19 @@
     border: none;
     cursor: pointer;
     transition: opacity .2s linear;
+    padding: 0;
 }
+
 .popup__close:hover {
     opacity: 0.6;
 }
 
 @media (max-width: 550px) {
     .popup__close {
-    top: -53px;
-    right: 0px;
-    }
-}
-
-@media (max-width: 450px) {
-    .popup__close {
-    width: 26px;
-    height: 26px;
+        background-size: cover;
+        top: -50px;
+        right: 0px;
+        width: 36.7px;
+        height: 36.7px;
     }
 }
