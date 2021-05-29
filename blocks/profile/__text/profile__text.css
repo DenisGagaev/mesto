@@ -5,6 +5,7 @@
     line-height: 22px;
     color: #fff;
     margin: 0;
+    max-width: 336px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -26,6 +27,6 @@
 
 @media (max-width: 450px) {
     .profile__text {
-        max-width: 250px;
+        max-width: 282px;
     }
 }

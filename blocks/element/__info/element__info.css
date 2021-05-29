@@ -1,6 +1,6 @@
 .element__info {
-    justify-content: space-between;
     display: flex;
+    justify-content: space-between;
     flex-wrap: nowrap;
     align-items: baseline;
     margin: 25px 21px;
