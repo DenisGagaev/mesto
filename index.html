@@ -5,16 +5,19 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Denis Gagaev" />
   <link rel="stylesheet" href="./pages/index.css">
   <title>Mesto</title>
 </head>
 
 <body class="body">
+
   <header class="header">
     <img src="./images/logo.svg" alt="Logo" class="header__logo">
   </header>
 
   <main class="content">
+
     <section class="profile content__profile">
       <div class="profile__data">
         <div class="profile__avatar"></div>
@@ -30,68 +33,57 @@
     </section>
 
     <section class="elements content__elements">
-      <article class="element">
-        <img class="element__image" src="./images/nikita-karimov-lvJZhHOIJJ4-unsplash.jpg" alt="Москва">
-        <div class="element__info">
-          <h2 class="element__text">Москва</h2>
-          <button class="element__like element__like_active" type="button"></button>
-        </div>
-      </article>
-      <article class="element">
-        <img class="element__image" src="./images/matvey-yelkin-saint-petersburg.jpg" alt="Санкт-Петербург">
-        <div class="element__info">
-          <h2 class="element__text">Санкт-Петербург</h2>
-          <button class="element__like" type="button"></button>
-        </div>
-      </article>
-      <article class="element">
-        <img class="element__image" src="./images/pavel-anoshin-vladivostok.jpg" alt="Владивосток">
-        <div class="element__info">
-          <h2 class="element__text">Владивосток</h2>
-          <button class="element__like" type="button"></button>
-        </div>
-      </article>
-      <article class="element">
-        <img class="element__image" src="./images/artem-beliaikin-kurshkaya-kosa.jpg" alt="Куршская Коса">
-        <div class="element__info">
-          <h2 class="element__text">Куршская Коса</h2>
-          <button class="element__like" type="button"></button>
-        </div>
-      </article>
-      <article class="element">
-        <img class="element__image" src="./images/dima-fedorov-sochi.jpg" alt="Сочи">
-        <div class="element__info">
-          <h2 class="element__text">Сочи</h2>
-          <button class="element__like" type="button"></button>
-        </div>
-      </article>
-      <article class="element">
-        <img class="element__image" src="./images/sasha-yudaev-kazan.jpg" alt="Казань">
-        <div class="element__info">
-          <h2 class="element__text">Казань</h2>
-          <button class="element__like" type="button"></button>
-        </div>
-      </article>
     </section>
+
   </main>
+
   <footer class="footer">
-    <p class="footer__copyright">&#169; 2020 Mesto Russia</p>
+    <p class="footer__copyright">&#169; 2021 Mesto / Gagaev Denis</p>
   </footer>
 
+  <!--Попап редактирования профиля-->
   <div class="popup">
     <div class="popup__container">
-      <button type="button" aria-label="закрыть попап" class="popup__close"></button>
+      <button type="button" aria-label="закрыть попап" class="popup__close" id="popup__close"></button>
       <h2 class="popup__header">Редактировать профиль</h2>
-      <form class="popup__form" name="popup__form">
-        <input class="popup__input" type="text" required="required" minlength="3" id="nickname" value=""
-          name="profileName">
-        <input class="popup__input" type="text" required="required" id="aboutme" value="" name="profileText">
+      <form class="popup__form" name="popup__form" id="popup__form-profile">
+        <input class="popup__input" type="text" required minlength="3" maxlength="20" id="nickname" value=""
+          name="profileName" placeholder="Ваше имя">
+        <input class="popup__input" type="text" required id="aboutme" value="" name="profileText"
+          placeholder="О Вас">
         <input type="submit" aria-label="кнопка сохранить" class="popup__save" value="Сохранить" name="popup__save">
       </form>
     </div>
   </div>
 
+  <!-- Попап добавления фотокарточек-->
+  <div class="popup" id="addpopup">
+    <div class="popup__container">
+      <button type="button" aria-label="закрыть попап" class="popup__close" id="addpopup__close"></button>
+      <h2 class="popup__header">Новое место</h2>
+      <form class="popup__form" name="popup__form">
+        <input name="photoText" class="popup__input" id="photoText" required minlength="3" maxlength="20"
+          placeholder="Название карточки" type="text">
+        <input name="photoLink" class="popup__input" id="photoLink" required
+          placeholder="Ссылка на картинку" type="url">
+        <input type="submit" aria-label="кнопка добавить фото" class="popup__save" value="Создать" name="popup__add">
+      </form>
+    </div>
+  </div>
+
+
+  <!--template для фото карточек-->
+  <template id="cardTemplate">
+    <article class="element">
+      <img class="element__image" src="#" alt="Ваши-Фото">
+      <div class="element__info">
+        <h2 class="element__text"></h2>
+        <button class="element__like" type="button"></button>
+      </div>
+  </template>
+
   <script src="./scripts/main.js"></script>
+
 </body>
 
 </html>
