@@ -23,7 +23,7 @@ const initialCards = [
     {
         text: 'Москва',
         link: './images/nikita-karimov-lvJZhHOIJJ4-unsplash.jpg'
-    }   
+    }
 ];
 //Текст профиля
 const openPopup = document.querySelector('.profile__edit');
@@ -40,24 +40,31 @@ const cardTemplate = document.querySelector('#cardTemplate').content;
 const addPopup = document.querySelector('#addpopup')
 const addButton = document.querySelector('.profile__add-button');
 const addClosePopup = document.querySelector('#addpopup__close');
-const formPhoto = document.querySelector('#popup__form-photo')
+const formPhoto = document.querySelector('#popup__form-photo');
 const photoText = formPhoto.querySelector("input[name='photoText']");
 const photoLink = formPhoto.querySelector("input[name='photoLink']");
 
-//Пройтись по массиву
-function addCards() {
-    initialCards.forEach(addCard)
-}
-//
-function addCard({ link, text }) {
-    const elementFoto = cardTemplate.cloneNode(true);
-    elementFoto.querySelector('.element__image').src = link;
-    elementFoto.querySelector('.element__text').innerText = text;
-    elementFoto.querySelector('.element__image').alt = text;
-    elements.prepend(elementFoto);
+//----------------------Код работы с фотокарточками-----------------------
+const addCard = (cardElement) => {
+    const cardsElement = cardTemplate.cloneNode(true);
+    cardsElement.querySelector('.element__text').innerText = cardElement.text;
+    cardsElement.querySelector('.element__image').src = cardElement.link;
+    cardsElement.querySelector('.element__image').alt = cardElement.text;
+    //Поставить\убрать лайк
+    cardsElement.querySelector('.element__like').addEventListener('click', function (evt) {
+        evt.target.classList.toggle('element__like_active');
+    });
+    //Удалить карточку
+    cardsElement.querySelector('.elements__delete').addEventListener('click', evt => {
+        const cardDelete = evt.target.closest('.element');
+        cardDelete.remove();
+    });
+    elements.prepend(cardsElement);
 };
-//Вызвать фотокарточки из массива
-addCards()
+
+//Пройтись по массиву
+const reversCards = initialCards.forEach(addCard)
+
 //Открыть\закрыть попап добавления фотокарточек
 function outFotoPopup() {
     addPopup.classList.toggle('popup_opened');
@@ -74,6 +81,8 @@ formPhoto.addEventListener('submit', evt => {
     formPhoto.reset();
     outFotoPopup()
 });
+//------------------------ Конец кода фотокарточек-----------------------------
+
 
 // Открыть Popup текста профиля с заполнением imput/закрыть Popup 
 function enterPopup() {
@@ -94,8 +103,11 @@ function formSubmitHandler(evt) {
 };
 formElement.addEventListener('submit', formSubmitHandler);
 
-//Слушатели
+//Слушатели Открытия/закрытия попапа добаления фото
 addClosePopup.addEventListener('click', outFotoPopup);
 addButton.addEventListener('click', outFotoPopup);
+//Слушатели Открытия/закрытия попапа текста профиля
 openPopup.addEventListener('click', enterPopup);
 closePopup.addEventListener('click', exitPopup);
+
+
