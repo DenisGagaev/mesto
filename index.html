@@ -49,8 +49,7 @@
       <form class="popup__form" name="popup__form" id="popup__form-profile">
         <input class="popup__input" type="text" required minlength="3" maxlength="20" id="nickname" value=""
           name="profileName" placeholder="Ваше имя">
-        <input class="popup__input" type="text" required id="aboutme" value="" name="profileText"
-          placeholder="О Вас">
+        <input class="popup__input" type="text" required id="aboutme" value="" name="profileText" placeholder="О Вас">
         <input type="submit" aria-label="кнопка сохранить" class="popup__save" value="Сохранить" name="popup__save">
       </form>
     </div>
@@ -64,10 +63,19 @@
       <form class="popup__form" name="popup__form" id="popup__form-photo">
         <input name="photoText" class="popup__input" id="photoText" required minlength="3" maxlength="20"
           placeholder="Название карточки" type="text">
-        <input name="photoLink" class="popup__input" id="photoLink" required
-          placeholder="Ссылка на картинку" type="url">
+        <input name="photoLink" class="popup__input" id="photoLink" required placeholder="Ссылка на картинку"
+          type="url">
         <input type="submit" aria-label="кнопка добавить фото" class="popup__save" value="Создать" name="popup__add">
       </form>
+    </div>
+  </div>
+
+  <!-- Попап открытия карточки-->
+  <div class="popup" id="imagePopap">
+    <div class="popup__image">
+      <img class="popup__photo" src="#" alt="">
+      <p class="popup__image-subtitle"></p>
+      <button type="button" aria-label="закрыть попап" class="popup__close" id="imagePopap__close"></button>
     </div>
   </div>
 

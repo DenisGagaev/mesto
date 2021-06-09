@@ -43,6 +43,11 @@ const addClosePopup = document.querySelector('#addpopup__close');
 const formPhoto = document.querySelector('#popup__form-photo');
 const photoText = formPhoto.querySelector("input[name='photoText']");
 const photoLink = formPhoto.querySelector("input[name='photoLink']");
+//Попапа с картинкой
+const imagePopap = document.querySelector('#imagePopap');
+const popupPhoto = document.querySelector('.popup__photo');
+const popupImageSubtitle = document.querySelector('.popup__image-subtitle');
+const imagePopapСlose = document.querySelector('#imagePopap__close');
 
 //----------------------Код работы с фотокарточками-----------------------
 const addCard = (cardElement) => {
@@ -59,6 +64,17 @@ const addCard = (cardElement) => {
         const cardDelete = evt.target.closest('.element');
         cardDelete.remove();
     });
+
+    //---------------------данные для попапа с фото
+    cardsElement.querySelector('.element__image').addEventListener('click', evt => {
+        const photoLink = evt.target.src;
+        const photoName = evt.target.closest('.element');
+        const photoText = photoName.querySelector('.element__text').textContent;
+        imagePopap.classList.toggle('popup_opened');
+        popupPhoto.src = photoLink;
+        popupImageSubtitle.textContent = photoText;
+    });
+    //------------------------------
     elements.prepend(cardsElement);
 };
 
@@ -69,6 +85,9 @@ const reversCards = initialCards.forEach(addCard)
 function outFotoPopup() {
     addPopup.classList.toggle('popup_opened');
 };
+
+
+
 //Добавление новых фото на страницу
 formPhoto.addEventListener('submit', evt => {
     evt.preventDefault();
@@ -109,5 +128,7 @@ addButton.addEventListener('click', outFotoPopup);
 //Слушатели Открытия/закрытия попапа текста профиля
 openPopup.addEventListener('click', enterPopup);
 closePopup.addEventListener('click', exitPopup);
-
-
+//Закрыть фото
+imagePopapСlose.addEventListener('click', function () {
+    imagePopap.classList.toggle('popup_opened');
+})
