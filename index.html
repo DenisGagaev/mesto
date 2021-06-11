@@ -42,9 +42,9 @@
   </footer>
 
   <!--Попап редактирования профиля-->
-  <div class="popup">
+  <div class="popup" id="popup__Profile">
     <div class="popup__container">
-      <button type="button" aria-label="закрыть попап" class="popup__close" id="popup__close"></button>
+      <button type="button" aria-label="закрыть попап" class="popup__close" id="popupProfileClose"></button>
       <h2 class="popup__header">Редактировать профиль</h2>
       <form class="popup__form" name="popup__form" id="popup__form-profile">
         <input class="popup__input" type="text" required minlength="3" maxlength="20" id="nickname" value=""
@@ -56,9 +56,9 @@
   </div>
 
   <!-- Попап добавления фотокарточек-->
-  <div class="popup" id="addpopup">
+  <div class="popup" id="popup__card">
     <div class="popup__container">
-      <button type="button" aria-label="закрыть попап" class="popup__close" id="addpopup__close"></button>
+      <button type="button" aria-label="закрыть попап" class="popup__close" id="popupCardClose"></button>
       <h2 class="popup__header">Новое место</h2>
       <form class="popup__form" name="popup__form" id="popup__form-photo">
         <input name="photoText" class="popup__input" id="photoText" required minlength="3" maxlength="20"
@@ -71,11 +71,11 @@
   </div>
 
   <!-- Попап открытия карточки-->
-  <div class="popup" id="imagePopap">
+  <div class="popup" id="popap__image">
     <div class="popup__image">
       <img class="popup__photo" src="#" alt="">
       <p class="popup__image-subtitle"></p>
-      <button type="button" aria-label="закрыть попап" class="popup__close" id="imagePopap__close"></button>
+      <button type="button" aria-label="закрыть попап" class="popup__close" id="PopapImageclose"></button>
     </div>
   </div>
 
@@ -91,9 +91,10 @@
       </div>
     </article>
   </template>
-
+  
+  <script src="./scripts/initial-сards.js"></script>
   <script src="./scripts/main.js"></script>
-
+  
 </body>
 
 </html>
