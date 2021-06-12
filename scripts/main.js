@@ -1,6 +1,6 @@
 const popupProfileClose = document.querySelector('#popupProfileClose')
 const popupCardClose = document.querySelector('#popupCardClose')
-const PopapImageclose = document.querySelector('#PopapImageclose')
+const popapImageclose = document.querySelector('#PopapImageclose')
 const popupProfile = document.querySelector('#popup__Profile')
 const popupCard = document.querySelector('#popup__card')
 const popupImage = document.querySelector('#popap__image')
@@ -11,7 +11,7 @@ const InputTextProfile = formElementProfile.querySelector("input[name='profileTe
 const profileName = document.querySelector('.profile__name');
 const profileText = document.querySelector('.profile__text');
 const cardTemplate = document.querySelector('#cardTemplate').content;
-const ContainerPhoto = document.querySelector('.elements');
+const containerPhoto = document.querySelector('.elements');
 const popupPhoto = document.querySelector('.popup__photo');
 const formPhoto = document.querySelector('#popup__form-photo');
 const photoText = formPhoto.querySelector("input[name='photoText']");
@@ -73,13 +73,13 @@ const renderElement = (element, container) => {
     container.prepend(element);
 };
 //Выгрузка из массива
-initialCards.forEach((item) => renderElement(createCard(item.text, item.link), ContainerPhoto));
+initialCards.forEach((item) => renderElement(createCard(item.text, item.link), containerPhoto));
 //Добавление новых фото на страницу
 formPhoto.addEventListener('submit', evt => {
     evt.preventDefault();
     const elementText = photoText.value;
     const elementLink = photoLink.value.trim();
-    renderElement(createCard(elementText, elementLink), ContainerPhoto);
+    renderElement(createCard(elementText, elementLink), containerPhoto);
     formPhoto.reset();
     removeClassOpened(popupCard)
 });
@@ -90,7 +90,7 @@ popupProfileClose.addEventListener('click', () => {
 popupCardClose.addEventListener('click', () => {
     removeClassOpened(popupCard)
 });
-PopapImageclose.addEventListener('click', () => {
+popapImageclose.addEventListener('click', () => {
     removeClassOpened(popupImage)
 });
 buttonAddPhoto.addEventListener('click', () => {
