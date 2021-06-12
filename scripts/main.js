@@ -6,8 +6,8 @@ const popupCard = document.querySelector('#popup__card')
 const popupImage = document.querySelector('#popap__image')
 const buttonEditProfile = document.querySelector('.profile__edit');
 const formElementProfile = document.querySelector('#popup__form-profile')
-const InputNameProfile = formElementProfile.querySelector("input[name='profileName']");
-const InputTextProfile = formElementProfile.querySelector("input[name='profileText']");
+const inputNameProfile = formElementProfile.querySelector("input[name='profileName']");
+const inputTextProfile = formElementProfile.querySelector("input[name='profileText']");
 const profileName = document.querySelector('.profile__name');
 const profileText = document.querySelector('.profile__text');
 const cardTemplate = document.querySelector('#cardTemplate').content;
@@ -26,13 +26,13 @@ const removeClassOpened = (popup) => { popup.classList.remove('popup_opened') }
 //Функции работы с профилем
 buttonEditProfile.addEventListener('click', () => {
     addClassOpened(popupProfile)
-    InputNameProfile.value = profileName.textContent
-    InputTextProfile.value = profileText.textContent
+    inputNameProfile.value = profileName.textContent
+    inputTextProfile.value = profileText.textContent
 });
 formElementProfile.addEventListener('submit', (evt) => {
     evt.preventDefault();
-    profileName.textContent = InputNameProfile.value
-    profileText.textContent = InputTextProfile.value
+    profileName.textContent = inputNameProfile.value
+    profileText.textContent = inputTextProfile.value
     removeClassOpened(popupProfile)
 });
 
