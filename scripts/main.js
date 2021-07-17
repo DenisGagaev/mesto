@@ -18,11 +18,22 @@ const photoText = formPhoto.querySelector("input[name='photoText']");
 const photoLink = formPhoto.querySelector("input[name='photoLink']");
 const popupImageSubtitle = document.querySelector('.popup__image-subtitle');
 const buttonAddPhoto = document.querySelector('.profile__add-button');
+const popupButtonAddFoto = popupCard.querySelector('.popup__button');
 
 // функция открытия-закрытия попапов
-const addClassOpened = (popup) => { popup.classList.add('popup_opened') }
-const removeClassOpened = (popup) => { popup.classList.remove('popup_opened') }
-
+const addClassOpened = (popup) => {
+    popup.classList.add('popup_opened');
+}
+const removeClassOpened = (popup) => {
+    popup.classList.remove('popup_opened')
+}
+window.onkeydown = (evt) => {
+    if (evt.keyCode == 27) {
+        removeClassOpened(popupProfile);
+        removeClassOpened(popupCard);
+        removeClassOpened(popupImage)
+    }
+};
 //Функции работы с профилем
 buttonEditProfile.addEventListener('click', () => {
     addClassOpened(popupProfile)
@@ -30,7 +41,6 @@ buttonEditProfile.addEventListener('click', () => {
     inputTextProfile.value = profileText.textContent
 });
 formElementProfile.addEventListener('submit', (evt) => {
-    evt.preventDefault();
     profileName.textContent = inputNameProfile.value
     profileText.textContent = inputTextProfile.value
     removeClassOpened(popupProfile)
@@ -76,12 +86,16 @@ const renderElement = (element, container) => {
 initialCards.forEach((item) => renderElement(createCard(item.text, item.link), containerPhoto));
 //Добавление новых фото на страницу
 formPhoto.addEventListener('submit', evt => {
-    evt.preventDefault();
     const elementText = photoText.value;
     const elementLink = photoLink.value.trim();
     renderElement(createCard(elementText, elementLink), containerPhoto);
     formPhoto.reset();
     removeClassOpened(popupCard)
+    enableValidation({
+        formSelector: '.popup__form',
+        inputSelector: '.popup__input',
+        submitButtonSelector: '.popup__button',
+    });
 });
 //---------Слушатели------------
 popupProfileClose.addEventListener('click', () => {
@@ -95,4 +109,12 @@ popapImageclose.addEventListener('click', () => {
 });
 buttonAddPhoto.addEventListener('click', () => {
     popupCard.classList.toggle('popup_opened');
+});
+const popupOverlay = Array.from(document.querySelectorAll('.popup__overlay'));
+const findAndClosePopup = popupOverlay.forEach((item) => {
+    item.addEventListener('click', () => {
+        removeClassOpened(popupProfile);
+        removeClassOpened(popupCard);
+        removeClassOpened(popupImage)
+    });
 });
