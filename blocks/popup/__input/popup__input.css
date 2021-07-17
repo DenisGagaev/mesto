@@ -9,9 +9,8 @@
     margin: 0;
     padding: 13px 0;
     outline: none;
-  }
-  
-  
-  .popup__input::placeholder {
+}
+
+.popup__input::placeholder {
     color: #C4C4C4;
-  }
+}
