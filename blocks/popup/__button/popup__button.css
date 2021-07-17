@@ -1,4 +1,4 @@
-.popup__save {
+.popup__button {
     font-family: 'Inter', sans-serif;
     width: -webkit-fill-available;
     appearance: none;
@@ -10,20 +10,20 @@
     font-size: 18px;
     line-height: 22px;
     color: #fff;
-    margin: 0 36px 37px;
+    margin: 18px 0 0;
     cursor: pointer;
     transition: opacity .2s linear;
     border-radius: 2px;
     padding: 0;
 }
 
-.popup__save:hover {
-    opacity: 0.8;
+.popup__button:hover {
+    opacity: .8;
 }
 
 @media (max-width: 450px) {
-    .popup__save {
-        margin: 0 22px 25px;
+    .popup__button {
+        margin: 15px 0 0px;
         font-size: 14px;
         line-height: 17px;
         height: 46px;

@@ -59,7 +59,7 @@ function openPopupFoto(evt) {
     popupImageSubtitle.textContent = photoText;
 };
 // Слушатели на карточку
-const setEventListeners = (element) => {
+const setsEventListeners = (element) => {
     const like = element.querySelector('.element__like')
     const remove = element.querySelector('.elements__delete')
     const image = element.querySelector('.element__image')
@@ -69,7 +69,7 @@ const setEventListeners = (element) => {
 };
 //Добавить карточку в начало контейнера
 const renderElement = (element, container) => {
-    setEventListeners(element);
+    setsEventListeners(element);
     container.prepend(element);
 };
 //Выгрузка из массива
