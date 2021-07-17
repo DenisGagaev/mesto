@@ -1,134 +1,120 @@
-//Массив с фото
-const initialCards = [
-    {
-        text: 'Казань',
-        link: './images/sasha-yudaev-kazan.jpg'
-    },
-    {
-        text: 'Сочи',
-        link: './images/dima-fedorov-sochi.jpg'
-    },
-    {
-        text: 'Куршская Коса',
-        link: './images/artem-beliaikin-kurshkaya-kosa.jpg'
-    },
-    {
-        text: 'Владивосток',
-        link: './images/pavel-anoshin-vladivostok.jpg'
-    },
-    {
-        text: 'Санкт-Петербург',
-        link: './images/matvey-yelkin-saint-petersburg.jpg'
-    },
-    {
-        text: 'Москва',
-        link: './images/nikita-karimov-lvJZhHOIJJ4-unsplash.jpg'
-    }
-];
-//Текст профиля
-const openPopup = document.querySelector('.profile__edit');
-const popup = document.querySelector('.popup');
-const closePopup = popup.querySelector('#popup__close');
-const formElement = document.querySelector('#popup__form-profile')
-const nameInput = formElement.querySelector("input[name='profileName']");
-const jobInput = formElement.querySelector("input[name='profileText']");
+const popupProfileClose = document.querySelector('#popupProfileClose')
+const popupCardClose = document.querySelector('#popupCardClose')
+const popapImageclose = document.querySelector('#PopapImageclose')
+const popupProfile = document.querySelector('#popup__Profile')
+const popupCard = document.querySelector('#popup__card')
+const popupImage = document.querySelector('#popap__image')
+const buttonEditProfile = document.querySelector('.profile__edit');
+const formElementProfile = document.querySelector('#popup__form-profile')
+const inputNameProfile = formElementProfile.querySelector("input[name='profileName']");
+const inputTextProfile = formElementProfile.querySelector("input[name='profileText']");
 const profileName = document.querySelector('.profile__name');
 const profileText = document.querySelector('.profile__text');
-const elements = document.querySelector('.elements')
-//Фотокарточка
 const cardTemplate = document.querySelector('#cardTemplate').content;
-const addPopup = document.querySelector('#addpopup')
-const addButton = document.querySelector('.profile__add-button');
-const addClosePopup = document.querySelector('#addpopup__close');
+const containerPhoto = document.querySelector('.elements');
+const popupPhoto = document.querySelector('.popup__photo');
 const formPhoto = document.querySelector('#popup__form-photo');
 const photoText = formPhoto.querySelector("input[name='photoText']");
 const photoLink = formPhoto.querySelector("input[name='photoLink']");
-//Попапа с картинкой
-const imagePopap = document.querySelector('#imagePopap');
-const popupPhoto = document.querySelector('.popup__photo');
 const popupImageSubtitle = document.querySelector('.popup__image-subtitle');
-const imagePopapСlose = document.querySelector('#imagePopap__close');
+const buttonAddPhoto = document.querySelector('.profile__add-button');
+const popupButtonAddFoto = popupCard.querySelector('.popup__button');
 
-//----------------------Код работы с фотокарточками-----------------------
-const addCard = (cardElement) => {
+// функция открытия-закрытия попапов
+const addClassOpened = (popup) => {
+    popup.classList.add('popup_opened');
+}
+const removeClassOpened = (popup) => {
+    popup.classList.remove('popup_opened')
+}
+window.onkeydown = (evt) => {
+    if (evt.keyCode == 27) {
+        removeClassOpened(popupProfile);
+        removeClassOpened(popupCard);
+        removeClassOpened(popupImage)
+    }
+};
+//Функции работы с профилем
+buttonEditProfile.addEventListener('click', () => {
+    addClassOpened(popupProfile)
+    inputNameProfile.value = profileName.textContent
+    inputTextProfile.value = profileText.textContent
+});
+formElementProfile.addEventListener('submit', (evt) => {
+    profileName.textContent = inputNameProfile.value
+    profileText.textContent = inputTextProfile.value
+    removeClassOpened(popupProfile)
+});
+
+//---------Фотоарточками-------------
+//Получить данные карточки
+const createCard = (elementText, elementLink) => {
     const cardsElement = cardTemplate.cloneNode(true);
-    cardsElement.querySelector('.element__text').innerText = cardElement.text;
-    cardsElement.querySelector('.element__image').src = cardElement.link;
-    cardsElement.querySelector('.element__image').alt = cardElement.text;
-    //Поставить\убрать лайк
-    cardsElement.querySelector('.element__like').addEventListener('click', function (evt) {
-        evt.target.classList.toggle('element__like_active');
-    });
-    //Удалить карточку
-    cardsElement.querySelector('.elements__delete').addEventListener('click', evt => {
-        const cardDelete = evt.target.closest('.element');
-        cardDelete.remove();
-    });
-
-    //---------------------данные для попапа с фото
-    cardsElement.querySelector('.element__image').addEventListener('click', evt => {
-        const photoLink = evt.target.src;
-        const photoName = evt.target.closest('.element');
-        const photoText = photoName.querySelector('.element__text').textContent;
-        imagePopap.classList.toggle('popup_opened');
-        popupPhoto.src = photoLink;
-        popupImageSubtitle.textContent = photoText;
-    });
-    //------------------------------
-    elements.prepend(cardsElement);
+    cardsElement.querySelector('.element__text').innerText = elementText;
+    cardsElement.querySelector('.element__image').src = elementLink;
+    cardsElement.querySelector('.element__image').alt = elementText;
+    return cardsElement
 };
-
-//Пройтись по массиву
-const reversCards = initialCards.forEach(addCard)
-
-//Открыть\закрыть попап добавления фотокарточек
-function outFotoPopup() {
-    addPopup.classList.toggle('popup_opened');
+//Функция удаления карточек
+const removeElement = (evt) => evt.target.closest('.element').remove();
+//Поставить\убрать лайк
+const toggleLike = (likeButton) => { likeButton.classList.toggle('element__like_active'); }
+//Функция раскрытия фото
+function openPopupFoto(evt) {
+    const photoLink = evt.target.src;
+    const photoName = evt.target.closest('.element');
+    const photoText = photoName.querySelector('.element__text').textContent;
+    popupImage.classList.toggle('popup_opened')
+    popupPhoto.src = photoLink;
+    popupImageSubtitle.textContent = photoText;
 };
-
-
-
+// Слушатели на карточку
+const setsEventListeners = (element) => {
+    const like = element.querySelector('.element__like')
+    const remove = element.querySelector('.elements__delete')
+    const image = element.querySelector('.element__image')
+    remove.addEventListener('click', removeElement);
+    like.addEventListener('click', function () { (toggleLike(like)) })
+    image.addEventListener('click', openPopupFoto)
+};
+//Добавить карточку в начало контейнера
+const renderElement = (element, container) => {
+    setsEventListeners(element);
+    container.prepend(element);
+};
+//Выгрузка из массива
+initialCards.forEach((item) => renderElement(createCard(item.text, item.link), containerPhoto));
 //Добавление новых фото на страницу
 formPhoto.addEventListener('submit', evt => {
-    evt.preventDefault();
-    let newCard =
-    {
-        link: photoLink.value,
-        text: photoText.value
-    };
-    addCard(newCard);
+    const elementText = photoText.value;
+    const elementLink = photoLink.value.trim();
+    renderElement(createCard(elementText, elementLink), containerPhoto);
     formPhoto.reset();
-    outFotoPopup()
+    removeClassOpened(popupCard)
+    enableValidation({
+        formSelector: '.popup__form',
+        inputSelector: '.popup__input',
+        submitButtonSelector: '.popup__button',
+    });
 });
-//------------------------ Конец кода фотокарточек-----------------------------
-
-
-// Открыть Popup текста профиля с заполнением imput/закрыть Popup 
-function enterPopup() {
-    popup.classList.add('popup_opened');
-    nameInput.value = profileName.textContent
-    jobInput.value = profileText.textContent
-};
-function exitPopup() {
-    popup.classList.remove('popup_opened');
-};
-
-// Сохранение дынных профиля из формы Popup
-function formSubmitHandler(evt) {
-    evt.preventDefault();
-    profileName.textContent = nameInput.value
-    profileText.textContent = jobInput.value
-    exitPopup()
-};
-formElement.addEventListener('submit', formSubmitHandler);
-
-//Слушатели Открытия/закрытия попапа добаления фото
-addClosePopup.addEventListener('click', outFotoPopup);
-addButton.addEventListener('click', outFotoPopup);
-//Слушатели Открытия/закрытия попапа текста профиля
-openPopup.addEventListener('click', enterPopup);
-closePopup.addEventListener('click', exitPopup);
-//Закрыть фото
-imagePopapСlose.addEventListener('click', function () {
-    imagePopap.classList.toggle('popup_opened');
-})
+//---------Слушатели------------
+popupProfileClose.addEventListener('click', () => {
+    removeClassOpened(popupProfile)
+});
+popupCardClose.addEventListener('click', () => {
+    removeClassOpened(popupCard)
+});
+popapImageclose.addEventListener('click', () => {
+    removeClassOpened(popupImage)
+});
+buttonAddPhoto.addEventListener('click', () => {
+    popupCard.classList.toggle('popup_opened');
+});
+const popupOverlay = Array.from(document.querySelectorAll('.popup__overlay'));
+const findAndClosePopup = popupOverlay.forEach((item) => {
+    item.addEventListener('click', () => {
+        removeClassOpened(popupProfile);
+        removeClassOpened(popupCard);
+        removeClassOpened(popupImage)
+    });
+});
