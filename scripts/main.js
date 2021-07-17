@@ -1,9 +1,11 @@
-const popupProfileClose = document.querySelector('#popupProfileClose')
-const popupCardClose = document.querySelector('#popupCardClose')
-const popapImageclose = document.querySelector('#PopapImageclose')
-const popupProfile = document.querySelector('#popup__Profile')
-const popupCard = document.querySelector('#popup__card')
-const popupImage = document.querySelector('#popap__image')
+const popupProfileClose = document.querySelector('#popupProfileClose');
+const popupCardClose = document.querySelector('#popupCardClose');
+const popapImageclose = document.querySelector('#PopapImageclose');
+const popupProfile = document.querySelector('#popup__Profile');
+const popupProfileInputError = Array.from(popupProfile.querySelectorAll('.popup__input-error'));
+const popupProfileInput = Array.from(popupProfile.querySelectorAll('.popup__input'));
+const popupCard = document.querySelector('#popup__card');
+const popupImage = document.querySelector('#popap__image');
 const buttonEditProfile = document.querySelector('.profile__edit');
 const formElementProfile = document.querySelector('#popup__form-profile')
 const inputNameProfile = formElementProfile.querySelector("input[name='profileName']");
@@ -27,9 +29,19 @@ const addClassOpened = (popup) => {
 const removeClassOpened = (popup) => {
     popup.classList.remove('popup_opened')
 }
+//--Функия удаления ошибки попапа профиля
+const deleteErrrorFormProfile = () => {
+    popupProfileInputError.forEach((item) => {
+        item.textContent = '';
+        item.classList.remove('popup__input-error_visible');
+    })
+    popupProfileInput.forEach((item) => {
+        item.classList.remove('popup__input_type_error');
+    })
+}
 window.onkeydown = (evt) => {
     if (evt.keyCode == 27) {
-        removeClassOpened(popupProfile);
+        removeClassOpened(popupProfile, deleteErrrorFormProfile());
         removeClassOpened(popupCard);
         removeClassOpened(popupImage)
     }
@@ -99,7 +111,7 @@ formPhoto.addEventListener('submit', evt => {
 });
 //---------Слушатели------------
 popupProfileClose.addEventListener('click', () => {
-    removeClassOpened(popupProfile)
+    removeClassOpened(popupProfile, deleteErrrorFormProfile())
 });
 popupCardClose.addEventListener('click', () => {
     removeClassOpened(popupCard)
@@ -110,10 +122,11 @@ popapImageclose.addEventListener('click', () => {
 buttonAddPhoto.addEventListener('click', () => {
     popupCard.classList.toggle('popup_opened');
 });
+//-------Закрыть попап по Оверлею-------
 const popupOverlay = Array.from(document.querySelectorAll('.popup__overlay'));
 const findAndClosePopup = popupOverlay.forEach((item) => {
     item.addEventListener('click', () => {
-        removeClassOpened(popupProfile);
+        removeClassOpened(popupProfile, deleteErrrorFormProfile());
         removeClassOpened(popupCard);
         removeClassOpened(popupImage)
     });
