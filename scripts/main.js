@@ -5,6 +5,7 @@ const popupProfile = document.querySelector('#popup__Profile');
 const popupProfileInputError = Array.from(popupProfile.querySelectorAll('.popup__input-error'));
 const popupProfileInput = Array.from(popupProfile.querySelectorAll('.popup__input'));
 const popupCard = document.querySelector('#popup__card');
+const popupCardInput = Array.from(popupCard.querySelectorAll('.popup__input'));
 const popupImage = document.querySelector('#popap__image');
 const buttonEditProfile = document.querySelector('.profile__edit');
 const formElementProfile = document.querySelector('#popup__form-profile')
@@ -25,12 +26,32 @@ const popupButtonAddFoto = popupCard.querySelector('.popup__button');
 // функция открытия-закрытия попапов
 const addClassOpened = (popup) => {
     popup.classList.add('popup_opened');
-}
+    document.addEventListener('keydown', (PressEsc));
+};
 const removeClassOpened = (popup) => {
     popup.classList.remove('popup_opened')
-}
+    document.removeEventListener('keydown', PressEsc)
+};
+const PressEsc = (evt) => {
+    const popupActive = document.querySelector('.popup_opened')
+    if (evt.key === "Escape") {
+        removeClassOpened(popupActive)
+        deleteErrorFormProfile()
+    };
+};
+//-------Закрыть попап по Оверлею-------
+const closePopupOverlay = () => {
+    const popupActive = document.querySelector('.popup_opened')
+    removeClassOpened(popupActive)
+    deleteErrorFormProfile()
+};
+const popupOverlay = Array.from(document.querySelectorAll('.popup__overlay'));
+const findAndClosePopup = popupOverlay.forEach((item) => {
+    item.addEventListener('click', (closePopupOverlay))
+});
+
 //--Функия удаления ошибки попапа профиля
-const deleteErrrorFormProfile = () => {
+const deleteErrorFormProfile = () => {
     popupProfileInputError.forEach((item) => {
         item.textContent = '';
         item.classList.remove('popup__input-error_visible');
@@ -38,80 +59,66 @@ const deleteErrrorFormProfile = () => {
     popupProfileInput.forEach((item) => {
         item.classList.remove('popup__input_type_error');
     })
-}
-window.onkeydown = (evt) => {
-    if (evt.keyCode == 27) {
-        removeClassOpened(popupProfile, deleteErrrorFormProfile());
-        removeClassOpened(popupCard);
-        removeClassOpened(popupImage)
-    }
 };
+
 //Функции работы с профилем
 buttonEditProfile.addEventListener('click', () => {
     addClassOpened(popupProfile)
     inputNameProfile.value = profileName.textContent
     inputTextProfile.value = profileText.textContent
 });
-formElementProfile.addEventListener('submit', (evt) => {
+formElementProfile.addEventListener('submit', () => {
     profileName.textContent = inputNameProfile.value
     profileText.textContent = inputTextProfile.value
     removeClassOpened(popupProfile)
 });
 
-//---------Фотоарточками-------------
+//---------Фотокарточки-------------
 //Получить данные карточки
 const createCard = (elementText, elementLink) => {
     const cardsElement = cardTemplate.cloneNode(true);
-    cardsElement.querySelector('.element__text').innerText = elementText;
-    cardsElement.querySelector('.element__image').src = elementLink;
-    cardsElement.querySelector('.element__image').alt = elementText;
+    const cardsImageElement = cardsElement.querySelector('.element__image')
+    const cardsTextElement = cardsElement.querySelector('.element__text')
+    cardsTextElement.textContent = elementText;
+    cardsImageElement.src = elementLink;
+    cardsImageElement.alt = elementText;
+    cardsElement.querySelector('.element__like').addEventListener('click', function (evt) {
+        evt.target.classList.toggle('element__like_active');
+    });
+    cardsElement.querySelector('.elements__delete').addEventListener('click', evt => {
+        const cardDelete = evt.target.closest('.element');
+        cardDelete.remove();
+    });
+    cardsImageElement.addEventListener('click', evt => {
+        const photoLink = evt.target.src;
+        const photoName = evt.target.closest('.element');
+        const photoText = photoName.querySelector('.element__text').textContent;
+        addClassOpened(popupImage)
+        popupPhoto.src = photoLink;
+        popupPhoto.alt = photoText
+        popupImageSubtitle.textContent = photoText;
+    });
     return cardsElement
 };
-//Функция удаления карточек
-const removeElement = (evt) => evt.target.closest('.element').remove();
-//Поставить\убрать лайк
-const toggleLike = (likeButton) => { likeButton.classList.toggle('element__like_active'); }
-//Функция раскрытия фото
-function openPopupFoto(evt) {
-    const photoLink = evt.target.src;
-    const photoName = evt.target.closest('.element');
-    const photoText = photoName.querySelector('.element__text').textContent;
-    popupImage.classList.toggle('popup_opened')
-    popupPhoto.src = photoLink;
-    popupImageSubtitle.textContent = photoText;
-};
-// Слушатели на карточку
-const setsEventListeners = (element) => {
-    const like = element.querySelector('.element__like')
-    const remove = element.querySelector('.elements__delete')
-    const image = element.querySelector('.element__image')
-    remove.addEventListener('click', removeElement);
-    like.addEventListener('click', function () { (toggleLike(like)) })
-    image.addEventListener('click', openPopupFoto)
-};
+
 //Добавить карточку в начало контейнера
 const renderElement = (element, container) => {
-    setsEventListeners(element);
     container.prepend(element);
 };
 //Выгрузка из массива
 initialCards.forEach((item) => renderElement(createCard(item.text, item.link), containerPhoto));
 //Добавление новых фото на страницу
-formPhoto.addEventListener('submit', evt => {
+formPhoto.addEventListener('submit', () => {
     const elementText = photoText.value;
     const elementLink = photoLink.value.trim();
     renderElement(createCard(elementText, elementLink), containerPhoto);
     formPhoto.reset();
+    toggleButtonState(popupCardInput, popupButtonAddFoto, 'popup__button_disabled');
     removeClassOpened(popupCard)
-    enableValidation({
-        formSelector: '.popup__form',
-        inputSelector: '.popup__input',
-        submitButtonSelector: '.popup__button',
-    });
 });
 //---------Слушатели------------
 popupProfileClose.addEventListener('click', () => {
-    removeClassOpened(popupProfile, deleteErrrorFormProfile())
+    removeClassOpened(popupProfile, deleteErrorFormProfile())
 });
 popupCardClose.addEventListener('click', () => {
     removeClassOpened(popupCard)
@@ -120,14 +127,5 @@ popapImageclose.addEventListener('click', () => {
     removeClassOpened(popupImage)
 });
 buttonAddPhoto.addEventListener('click', () => {
-    popupCard.classList.toggle('popup_opened');
-});
-//-------Закрыть попап по Оверлею-------
-const popupOverlay = Array.from(document.querySelectorAll('.popup__overlay'));
-const findAndClosePopup = popupOverlay.forEach((item) => {
-    item.addEventListener('click', () => {
-        removeClassOpened(popupProfile, deleteErrrorFormProfile());
-        removeClassOpened(popupCard);
-        removeClassOpened(popupImage)
-    });
+    addClassOpened(popupCard)
 });
