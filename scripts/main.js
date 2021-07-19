@@ -32,7 +32,7 @@ const removeClassOpened = (popup) => {
     popup.classList.remove('popup_opened')
     document.removeEventListener('keydown', PressEsc)
 };
-const PressEsc = (evt) => {
+const pressEsc = (evt) => {
     const popupActive = document.querySelector('.popup_opened')
     if (evt.key === "Escape") {
         removeClassOpened(popupActive)
