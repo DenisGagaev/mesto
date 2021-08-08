@@ -1,3 +1,7 @@
+import { initialCards } from "./initial-сards.js";
+import { Card } from "./Card.js";
+
+
 const popupProfileClose = document.querySelector('#popupProfileClose');
 const popupCardClose = document.querySelector('#popupCardClose');
 const popapImageclose = document.querySelector('#PopapImageclose');
@@ -26,11 +30,11 @@ const popupButtonAddFoto = popupCard.querySelector('.popup__button');
 // функция открытия-закрытия попапов
 const addClassOpened = (popup) => {
     popup.classList.add('popup_opened');
-    document.addEventListener('keydown', (PressEsc));
+    document.addEventListener('keydown', (pressEsc));
 };
 const removeClassOpened = (popup) => {
     popup.classList.remove('popup_opened')
-    document.removeEventListener('keydown', PressEsc)
+    document.removeEventListener('keydown', pressEsc)
 };
 const pressEsc = (evt) => {
     const popupActive = document.querySelector('.popup_opened')
@@ -73,49 +77,27 @@ formElementProfile.addEventListener('submit', () => {
     removeClassOpened(popupProfile)
 });
 
-//---------Фотокарточки-------------
-//Получить данные карточки
-const createCard = (elementText, elementLink) => {
-    const cardsElement = cardTemplate.cloneNode(true);
-    const cardsImageElement = cardsElement.querySelector('.element__image')
-    const cardsTextElement = cardsElement.querySelector('.element__text')
-    cardsTextElement.textContent = elementText;
-    cardsImageElement.src = elementLink;
-    cardsImageElement.alt = elementText;
-    cardsElement.querySelector('.element__like').addEventListener('click', function (evt) {
-        evt.target.classList.toggle('element__like_active');
-    });
-    cardsElement.querySelector('.elements__delete').addEventListener('click', evt => {
-        const cardDelete = evt.target.closest('.element');
-        cardDelete.remove();
-    });
-    cardsImageElement.addEventListener('click', evt => {
-        const photoLink = evt.target.src;
-        const photoName = evt.target.closest('.element');
-        const photoText = photoName.querySelector('.element__text').textContent;
-        addClassOpened(popupImage)
-        popupPhoto.src = photoLink;
-        popupPhoto.alt = photoText
-        popupImageSubtitle.textContent = photoText;
-    });
-    return cardsElement
-};
+//Добавить фотокарточку в начало контейнера
+initialCards.forEach((item) => {
+    const card = new Card(item, "#cardTemplate");
+    const cardExample = card.generateCard();
+    containerPhoto.prepend(cardExample);
+  });
 
-//Добавить карточку в начало контейнера
-const renderElement = (element, container) => {
-    container.prepend(element);
-};
-//Выгрузка из массива
-initialCards.forEach((item) => renderElement(createCard(item.text, item.link), containerPhoto));
 //Добавление новых фото на страницу
-formPhoto.addEventListener('submit', () => {
-    const elementText = photoText.value;
-    const elementLink = photoLink.value.trim();
-    renderElement(createCard(elementText, elementLink), containerPhoto);
+formPhoto.addEventListener("submit", () => {
+    const newCard = {
+        text: photoText.value,
+        link: photoLink.value.trim(),
+    };
+    const addCard = new Card(newCard, "#cardTemplate");
+    const cardElement = addCard.generateCard();
+    containerPhoto.prepend(cardElement);
     formPhoto.reset();
     toggleButtonState(popupCardInput, popupButtonAddFoto, 'popup__button_disabled');
     removeClassOpened(popupCard)
 });
+
 //---------Слушатели------------
 popupProfileClose.addEventListener('click', () => {
     removeClassOpened(popupProfile, deleteErrorFormProfile())
@@ -129,3 +111,5 @@ popapImageclose.addEventListener('click', () => {
 buttonAddPhoto.addEventListener('click', () => {
     addClassOpened(popupCard)
 });
+
+export {addClassOpened, popupPhoto, popupImageSubtitle, popupImage}

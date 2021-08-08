@@ -25,3 +25,5 @@ const initialCards = [
         link: './images/nikita-karimov-lvJZhHOIJJ4-unsplash.jpg'
     }
 ];
+
+export { initialCards };
