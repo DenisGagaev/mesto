@@ -26,13 +26,13 @@ export class Card {
   _setEventListeners() {
     this._element
       .querySelector(".element__like")
-      .addEventListener("click", function (evt) {
-        evt.target.classList.toggle('element__like_active');
+      .addEventListener("click", (evt) => {
+        this._toggleLike(evt);
       });
     this._element
       .querySelector(".elements__delete")
       .addEventListener('click', evt => {
-        evt.target.closest('.element').remove();
+        this._deleteFotoCard(evt);
       });
     this._element.querySelector(".element__image")
       .addEventListener("click", () => {
@@ -45,5 +45,14 @@ export class Card {
     popupPhoto.src = this._link;
     popupPhoto.alt = this._text;
     popupImageSubtitle.textContent = this._text;
+  };
+
+  _toggleLike(evt) {
+    evt.target.classList.toggle('element__like_active');
+  };
+
+  _deleteFotoCard(evt) {
+    evt.target.closest('.element').remove();
   }
+
 };

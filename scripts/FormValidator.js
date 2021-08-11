@@ -5,6 +5,7 @@ export const enableValidation = {
 	inactiveButtonClass: 'popup__button_disabled',
 	inputErrorClass: 'popup__input_type_error',
 	errorClass: 'popup__input-error_visible',
+	inputError: '.popup__input-error',
 };
 // Создание классов
 export class FormValidator {
@@ -16,7 +17,9 @@ export class FormValidator {
 		this._inputErrorClass = popupElements.inputErrorClass;
 		this._inactiveButtonClass = popupElements.inactiveButtonClass;
 		this._errorClass = popupElements.errorClass;
+		this._inputError = popupElements.inputError;
 		this._inputs = Array.from(this._form.querySelectorAll(this._inputSelector));
+		this._errors = Array.from(this._form.querySelectorAll(this._inputError));
 	}
 	// Скрыть/Отображение сообщения об ошибке
 	_showInputError() {
@@ -72,4 +75,16 @@ export class FormValidator {
 			this.toggleSubmit(),
 		);
 	}
+	//удалить все ошибки
+	hideAllErrors() {
+		this._errors.forEach((item) => {
+			item.textContent = "";
+			item.classList.remove(this._errorClass);
+		});
+		this._inputs.forEach((input) => {
+			input.classList.remove(this._inputErrorClass);
+		});
+		// я конечно еще подумаю, но мне кажется у _hideInputError 2 параметра.
+		this._toggleButtonState();
+	};
 }
