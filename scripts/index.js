@@ -67,15 +67,18 @@ formElementProfile.addEventListener('submit', () => {
 });
 
 // Создать каточку
-const cardElement = (evt) => {
+const createCard = (evt) => {
 	const card = new Card(evt, "#cardTemplate");
-	const createCard = card.generateCard();
-	containerPhoto.prepend(createCard);
-	return card;
+	const cardElement = card.generateCard();
+	return cardElement;
 };
-//Добавить массив фото в начало контейнера
+//Функция вставки карточки в начало контейнер
+const renderCard = ((card, container) => {
+	container.prepend(card);
+});
+//Добавить массив на страницу
 initialCards.forEach((item) => {
-	cardElement(item)
+	renderCard(createCard(item), containerPhoto) 
 });
 //Добавление новых фото на страницу
 formPhoto.addEventListener("submit", () => {
@@ -83,7 +86,7 @@ formPhoto.addEventListener("submit", () => {
 		text: inputPhotoText.value,
 		link: inputPhotoLink.value.trim(),
 	};
-	cardElement(newCard)
+	renderCard(createCard(newCard), containerPhoto) 
 	formPhoto.reset();
 	removeClassOpened(popupCard)
 });

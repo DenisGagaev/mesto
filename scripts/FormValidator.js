@@ -19,24 +19,24 @@ export class FormValidator {
 		this._errorClass = popupElements.errorClass;
 		this._inputError = popupElements.inputError;
 		this._inputs = Array.from(this._form.querySelectorAll(this._inputSelector));
-		this._errors = Array.from(this._form.querySelectorAll(this._inputError));
 	}
 	// Скрыть/Отображение сообщения об ошибке
-	_showInputError() {
-		this._element.classList.add(this._inputErrorClass);
+	_showInputError(inputElement) {
+		this._errorElement = this._form.querySelector(`#${inputElement.id}-error`);
+		inputElement.classList.add(this._inputErrorClass);
 		this._errorElement.classList.add(this._errorClass);
 		this._errorElement.textContent = this._element.validationMessage;
 	}
-	_hideInputError() {
-		this._element.classList.remove(this._inputErrorClass);
+	_hideInputError(inputElement) {
+		this._errorElement = this._form.querySelector(`#${inputElement.id}-error`);
+		inputElement.classList.remove(this._inputErrorClass);
 		this._errorElement.classList.remove(this._errorClass);
 		this._errorElement.textContent = "";
 	}
 	// Проверка импутов и формы на валидность
-	_isValid(element) {
-		this._element = element;
-		this._errorElement = this._form.querySelector(`#${this._element.id}-error`);
-		!this._element.validity.valid ? this._showInputError() : this._hideInputError();
+	_isValid(inputElement) {
+		this._element = inputElement;
+		!this._element.validity.valid ? this._showInputError(inputElement) : this._hideInputError(inputElement);
 	}
 	_hasInvalidInput() {
 		return this._inputs.some((inputElement) => {
@@ -60,9 +60,9 @@ export class FormValidator {
 	// Установка слушателей
 	_setEventListeners() {
 		this._buttonElement = this._form.querySelector(this._submitButtonSelector);
-		this._inputs.forEach((element) => {
-			element.addEventListener("input", () => {
-				this._isValid(element);
+		this._inputs.forEach((inputElement) => {
+			inputElement.addEventListener("input", () => {
+				this._isValid(inputElement);
 				this.toggleSubmit()
 			});
 		});
@@ -77,14 +77,10 @@ export class FormValidator {
 	}
 	//удалить все ошибки
 	hideAllErrors() {
-		this._errors.forEach((item) => {
-			item.textContent = "";
-			item.classList.remove(this._errorClass);
+		this._inputs.forEach((inputElement) => {
+			this._hideInputError(inputElement)
 		});
-		this._inputs.forEach((input) => {
-			input.classList.remove(this._inputErrorClass);
-		});
-		// я конечно еще подумаю, но мне кажется у _hideInputError 2 параметра.
+		//пришлось сильно подумать! Но оказывается все проще, чем думается)))
 		this._toggleButtonState();
 	};
 }
