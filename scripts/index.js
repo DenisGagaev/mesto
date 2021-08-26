@@ -1,110 +1,94 @@
 import { initialCards } from "./initial-сards.js";
 import { Card } from "./Card.js";
 import { FormValidator, enableValidation } from "./FormValidator.js"
+import Section from "./Section.js";
+import UserInfo from "./UserInfo.js";
+import PopupWithForm from "./PopupWithForm.js";
+import PopupWithImage from "./PopupWithImage.js";
 
 const formElementProfile = document.querySelector('#popup__form-profile')
-const formPhoto = document.querySelector('#popup__form-photo');
-const popupProfileClose = document.querySelector('#popupProfileClose');
-const popupCardClose = document.querySelector('#popupCardClose');
-const popapImageclose = document.querySelector('#PopapImageclose');
 const popupProfile = document.querySelector('#popup__Profile');
 const popupCard = document.querySelector('#popup__card');
 const popupImage = document.querySelector('#popap__image');
-const inputNameProfile = formElementProfile.querySelector("input[name='profileName']");
-const inputTextProfile = formElementProfile.querySelector("input[name='profileText']");
+const inputNameProfile = formElementProfile.querySelector("#popup__name-input");
+const inputTextProfile = formElementProfile.querySelector("#popup__text-input");
 const profileName = document.querySelector('.profile__name');
 const profileText = document.querySelector('.profile__text');
 const containerPhoto = document.querySelector('.elements');
-const popupPhoto = document.querySelector('.popup__photo');
-const inputPhotoText = formPhoto.querySelector("input[name='photoText']");
-const inputPhotoLink = formPhoto.querySelector("input[name='photoLink']");
-const popupImageSubtitle = document.querySelector('.popup__image-subtitle');
 const buttonEditProfile = document.querySelector('.profile__edit');
 const buttonAddPhoto = document.querySelector('.profile__addfoto-button');
 
-//Валидация
+// Валидация
 const editPopupValidation = new FormValidator(enableValidation, popupProfile);
 const addPopupValidation = new FormValidator(enableValidation, popupCard);
 editPopupValidation.enableValidation();
 addPopupValidation.enableValidation();
 
-// функция открытия-закрытия попапов
-const addClassOpened = (popup) => {
-	popup.classList.add('popup_opened');
-	document.addEventListener('keydown', pressEsc);
+// Открыть попап с фото
+const openImagePopup = (evt) => {
+  const data = {
+    link: evt.target.src,
+    text: evt.target
+      .closest(".element")
+      .querySelector(".element__text").textContent,
+  };
+  popupWithImage.open(data);
 };
-const removeClassOpened = (popup) => {
-	popup.classList.remove('popup_opened')
-	document.removeEventListener('keydown', pressEsc)
-};
-const pressEsc = (evt) => {
-	const popupActive = document.querySelector('.popup_opened')
-	if (evt.key === "Escape") {
-		removeClassOpened(popupActive)
-	};
-};
-//-------Закрыть попап по Оверлею-------
-const closePopupOverlay = () => {
-	const popupActive = document.querySelector('.popup_opened')
-	removeClassOpened(popupActive)
-};
-const popupOverlay = Array.from(document.querySelectorAll('.popup__overlay'));
-popupOverlay.forEach((item) => {
-	item.addEventListener('click', (closePopupOverlay))
-});
+const popupWithImage = new PopupWithImage(popupImage);
+popupWithImage.setEventListeners();
 
-//Функции работы с профилем
-buttonEditProfile.addEventListener('click', () => {
-	addClassOpened(popupProfile);
-	editPopupValidation.hideAllErrors();
-	inputNameProfile.value = profileName.textContent
-	inputTextProfile.value = profileText.textContent
-});
-formElementProfile.addEventListener('submit', () => {
-	profileName.textContent = inputNameProfile.value
-	profileText.textContent = inputTextProfile.value
-	removeClassOpened(popupProfile)
-});
-
-// Создать каточку
+// Генерация карточек
 const createCard = (evt) => {
-	const card = new Card(evt, "#cardTemplate");
-	const cardElement = card.generateCard();
-	return cardElement;
+  const card = new Card(evt, "#cardTemplate", openImagePopup);
+  const cardElement = card.generateCard(evt);
+  return cardElement;
 };
-//Функция вставки карточки в начало контейнер
-const renderCard = ((card, container) => {
-	container.prepend(card);
+
+const section = new Section(
+  {
+    renderItems: (data) => {
+      section.addItem(createCard(data));
+    },
+  },
+  containerPhoto
+);
+section.renderItems(initialCards);
+
+// Попап добавления фото
+const addNewCardPopup = new PopupWithForm(popupCard, {
+  formSubmitCallBack: (data) => {
+    const item = {
+      text: data.photoText,
+      link: data.photoLink,
+    };
+    section.addItem(createCard(item), true);
+    addNewCardPopup.close();
+    console.log()
+  },
 });
-//Добавить массив на страницу
-initialCards.forEach((item) => {
-	renderCard(createCard(item), containerPhoto) 
+addNewCardPopup.setEventListeners();
+
+//* Попап редактирования профиля/
+const userInfo = new UserInfo({ profileName, profileText });
+
+const editPopup = new PopupWithForm(popupProfile, {
+  formSubmitCallBack: (data) => {
+    userInfo.setUserInfo(data);
+    console.log()
+    editPopup.close();
+  },
 });
-//Добавление новых фото на страницу
-formPhoto.addEventListener("submit", () => {
-	const newCard = {
-		text: inputPhotoText.value,
-		link: inputPhotoLink.value.trim(),
-	};
-	renderCard(createCard(newCard), containerPhoto) 
-	formPhoto.reset();
-	removeClassOpened(popupCard)
-});
+editPopup.setEventListeners();
 
 //---------Слушатели------------
-popupProfileClose.addEventListener('click', () => {
-	removeClassOpened(popupProfile)
+buttonEditProfile.addEventListener('click', () => {
+  const data = userInfo.getUserInfo();
+  editPopupValidation.hideAllErrors();
+  inputNameProfile.value = data.name
+  inputTextProfile.value = data.text
+  editPopup.open();
 });
-popupCardClose.addEventListener('click', () => {
-	removeClassOpened(popupCard)
+buttonAddPhoto.addEventListener("click", () => {
+  addNewCardPopup.open();
+  addPopupValidation.hideAllErrors();
 });
-popapImageclose.addEventListener('click', () => {
-	removeClassOpened(popupImage)
-});
-buttonAddPhoto.addEventListener('click', () => {
-	addClassOpened(popupCard)
-	formPhoto.reset();
-	addPopupValidation.hideAllErrors();
-});
-
-export { addClassOpened, popupPhoto, popupImageSubtitle, popupImage }

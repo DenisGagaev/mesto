@@ -1,14 +1,16 @@
-import { addClassOpened, popupPhoto, popupImageSubtitle, popupImage } from "./index.js";
 //конструктор создаёт карточку с текстом и ссылкой на изображение
 export class Card {
-  constructor(data, cardSelector) {
+  constructor(data, cardSelector, handleCardClick) {
     this._text = data.text;
     this._link = data.link;
     this._cardSelector = cardSelector;
+    this._handleCardClick = handleCardClick;
   };
 
   _getTemplate() {
-    const cardElement = document.querySelector(this._cardSelector).content.cloneNode(true);
+    const cardElement = document
+    .querySelector(this._cardSelector)
+    .content.cloneNode(true);
     return cardElement;
   };
 
@@ -34,17 +36,9 @@ export class Card {
       .addEventListener('click', evt => {
         this._deleteFotoCard(evt);
       });
-    this._element.querySelector(".element__image")
-      .addEventListener("click", () => {
-        this._pictureClick();
-      });
-  };
-
-  _pictureClick() {
-    addClassOpened(popupImage);
-    popupPhoto.src = this._link;
-    popupPhoto.alt = this._text;
-    popupImageSubtitle.textContent = this._text;
+    this._element
+      .querySelector(".element__image")
+      .addEventListener("click", this._handleCardClick);
   };
 
   _toggleLike(evt) {
@@ -54,5 +48,4 @@ export class Card {
   _deleteFotoCard(evt) {
     evt.target.closest('.element').remove();
   }
-
 };
