@@ -2,10 +2,13 @@
 *Учебный проект в рамках обучения в [Яндекс.Практикум](https://praktikum.yandex.ru)*
 
 **Сервис дает возможность делится фотографиями красивых мест и собирать лайки под фото, создавая свой фотоальбом!**
-
-![пример](./src/images/Gifius.ru.gif)  
+<div align="center">
+  <img width="700" height="300" src="https://github.com/DenisGagaev/mesto/blob/main/src/images/Gifius.ru.gif?raw=true">
+  </div>
+  
 
 ### Обзор
+- Собран с помощью webpack ![npm] 
 - Реализована возможность редактирования профиля и добавление новых снимков. 
 - Создается по методологии БЭМ.
 - Написан на HTML 5, CSS и ECMAScript 6
@@ -27,3 +30,4 @@
 ```
 Сверстал Гагаев Денис.
 ```
+[npm]: https://github.com/DenisGagaev/mesto/blob/main/src/images/webpack_original_wordmark_logo_icon_146301.png?raw=true
