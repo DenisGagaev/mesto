@@ -1,0 +1,22 @@
+.profile__avatar-batton {
+	position: absolute;
+	cursor: pointer;
+	border-radius: 50%;
+	width: 121px;
+	height: 121px;
+	padding: 0;
+	border: 0;
+	background: url(../../../images/pen.svg) no-repeat;
+	background-size: 26px 26px;
+	background-position: center;
+	background-color: rgba(0, 0, 0, 0.8);
+	display: none;
+}
+
+.profile__avatar:hover~.profile__avatar-batton {
+	display: block;
+}
+
+.profile__avatar-batton:hover {
+	display: block;
+}

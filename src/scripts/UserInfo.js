@@ -1,7 +1,8 @@
 export default class UserInfo {
-    constructor({ profileName, profileText }) {
+    constructor({ profileName, profileText, profileAvatar}) {
       this._name = profileName;
       this._text = profileText;
+      this._profileAvatar = profileAvatar;
     }
   
     getUserInfo() {
@@ -12,9 +13,11 @@ export default class UserInfo {
       return userInfo;
     }
 
-  
     setUserInfo(userInfo) {
-      this._name.textContent = userInfo.profileName.trim();
-      this._text.textContent = userInfo.profileText.trim();
+      this._name.textContent = userInfo.name;
+      this._text.textContent = userInfo.about;
+    }
+    setAvatarInfo(linkAvatar) {
+      this._profileAvatar.style.backgroundImage = `url("${linkAvatar.avatar}")`;
     }
   }

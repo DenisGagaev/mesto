@@ -1,4 +1,3 @@
-import { initialCards } from "./initial-сards.js";
 import { Card } from "./Card.js";
 import { FormValidator, enableValidation } from "./FormValidator.js"
 import Section from "./Section.js";
@@ -6,24 +5,40 @@ import UserInfo from "./UserInfo.js";
 import PopupWithForm from "./PopupWithForm.js";
 import PopupWithImage from "./PopupWithImage.js";
 import '../pages/index.css';
+import Api from "./Api.js"
+import {
+  popupProfile,
+  popupCard,
+  popupImage,
+  inputNameProfile,
+  inputTextProfile,
+  profileName,
+  profileText,
+  profileAvatar,
+  editAvatar,
+  containerPhoto,
+  buttonEditProfile,
+  buttonAddPhoto,
+  popupAvatar
+} from "./constants.js";
 
-const formElementProfile = document.querySelector('#popup__form-profile')
-const popupProfile = document.querySelector('#popup__Profile');
-const popupCard = document.querySelector('#popup__card');
-const popupImage = document.querySelector('#popap__image');
-const inputNameProfile = formElementProfile.querySelector("#popup__name-input");
-const inputTextProfile = formElementProfile.querySelector("#popup__text-input");
-const profileName = document.querySelector('.profile__name');
-const profileText = document.querySelector('.profile__text');
-const containerPhoto = document.querySelector('.elements');
-const buttonEditProfile = document.querySelector('.profile__edit');
-const buttonAddPhoto = document.querySelector('.profile__addfoto-button');
+//Api
+const api = new Api({
+  serverUrl: "https://mesto.nomoreparties.co/v1/cohort-27/",
+  token: "8747a9a0-014b-48d6-8e47-516b00c90197"
+});
+
+let userId;
+
+const initialData = [api.getUserInfo(), api.getInitialCards()]
 
 // Валидация
 const editPopupValidation = new FormValidator(enableValidation, popupProfile);
 const addPopupValidation = new FormValidator(enableValidation, popupCard);
+const avatarPopupValidation = new FormValidator(enableValidation, popupAvatar);
 editPopupValidation.enableValidation();
 addPopupValidation.enableValidation();
+avatarPopupValidation.enableValidation();
 
 // Открыть попап с фото
 const openImagePopup = (evt) => {
@@ -53,7 +68,6 @@ const section = new Section(
   },
   containerPhoto
 );
-section.renderItems(initialCards);
 
 // Попап добавления фото
 const addNewCardPopup = new PopupWithForm(popupCard, {
@@ -69,17 +83,35 @@ const addNewCardPopup = new PopupWithForm(popupCard, {
 });
 addNewCardPopup.setEventListeners();
 
-//* Попап редактирования профиля/
-const userInfo = new UserInfo({ profileName, profileText });
+// Попап редактирования профиля
+const userInfo = new UserInfo({ profileName, profileText, profileAvatar });
 
 const editPopup = new PopupWithForm(popupProfile, {
   formSubmitCallBack: (data) => {
-    userInfo.setUserInfo(data);
-    console.log()
-    editPopup.close();
+    api
+      .editProfile(data)
+      .then((res) => {
+        userInfo.setUserInfo(res);
+        editPopup.close();
+      })
+      .catch((err) => console.log(err))
   },
 });
 editPopup.setEventListeners();
+
+//Замена аватарки
+const editAvatarProfile = new PopupWithForm(popupAvatar, {
+  formSubmitCallBack: (data) => {
+    api
+      .editAvatar(data)
+      .then((res) => {
+        userInfo.setAvatarInfo(res);
+        editAvatarProfile.close();
+      })
+      .catch((err) => console.log(err))
+  },
+});
+editAvatarProfile.setEventListeners();
 
 //---------Слушатели------------
 buttonEditProfile.addEventListener('click', () => {
@@ -93,3 +125,16 @@ buttonAddPhoto.addEventListener("click", () => {
   addNewCardPopup.open();
   addPopupValidation.hideAllErrors();
 });
+editAvatar.addEventListener("click", () => {
+  editAvatarProfile.open();
+  avatarPopupValidation.enableValidation();
+})
+//данные с сервера для мзначальной отрисовки
+Promise.all(initialData)
+  .then(([userData, cards]) => {
+    userId = userData._id;
+    userInfo.setUserInfo(userData);
+    userInfo.setAvatarInfo(userData);
+    section.renderItems(cards);
+  })
+  .catch((err) => console.log(err));

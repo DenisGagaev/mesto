@@ -5,14 +5,14 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="author" content="Denis Gagaev"/>
+  <meta name="author" content="Denis Gagaev" />
   <title>Mesto</title>
 </head>
 
 <body class="body">
 
   <header class="header">
-    <img src="<%=require('./images/logo.svg')%>"" alt="Logo" class="header__logo">
+    <img src="<%=require('./images/logo.svg')%>" alt="Logo" class="header__logo">
   </header>
 
   <main class="content">
@@ -20,6 +20,7 @@
     <section class="profile content__profile">
       <div class="profile__data">
         <div class="profile__avatar"></div>
+          <button type="button" class="profile__avatar-batton" aria-label="Редактировать профиль"></button>
         <div class="profile__info">
           <div class="profile__block">
             <h1 class="profile__name">Жак-Ив Кусто</h1>
@@ -49,12 +50,12 @@
         <fieldset class="popup__set">
           <label class="popup__form-field">
             <input class="popup__input" type="text" required minlength="2" maxlength="40" id="popup__name-input"
-              value="" name="profileName" placeholder="Ваше имя">
+              value="" name="name" placeholder="Ваше имя">
             <span id="popup__name-input-error" class="popup__input-error"></span>
           </label>
           <label class="popup__form-field">
             <input class="popup__input" type="text" required minlength="2" maxlength="200" id="popup__text-input"
-              value="" name="profileText" placeholder="О Вас">
+              value="" name="about" placeholder="О Вас">
             <span id="popup__text-input-error" class="popup__input-error"></span>
           </label>
           <button type="submit" class="popup__button">Сохранить</button>
@@ -96,6 +97,25 @@
       <button type="button" aria-label="закрыть попап" class="popup__close" id="PopapImageclose"></button>
     </div>
     <div class="popup__overlay" id="popup__overlay-image"></div>
+  </div>
+
+  <!-- Попап редактирования аватара-->
+  <div class="popup" id="popap__avatar">
+    <div class="popup__container">
+      <button type="button" aria-label="закрыть попап" class="popup__close" id="popupAvatarClose"></button>
+      <h2 class="popup__header">Обновить аватар</h2>
+      <form class="popup__form" name="popup__form" id="popup__form-avatar" autocomplete="off" novalidate>
+        <fieldset class="popup__set">
+          <label class="popup__form-field">
+            <input name="avatarLink" class="popup__input" id="popup__avatarLink-input" required
+              placeholder="Ссылка на картинку" type="url">
+            <span id="popup__avatarLink-input-error" class="popup__input-error"></span>
+          </label>
+          <button type="submit" class="popup__button">Сохранить</button>
+        </fieldset>
+      </form>
+    </div>
+    <div class="popup__overlay" id="popup__overlay-Avatar"></div>
   </div>
 
   <!--template для фото карточек-->

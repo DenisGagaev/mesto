@@ -1,7 +1,7 @@
 //конструктор создаёт карточку с текстом и ссылкой на изображение
 export class Card {
   constructor(data, cardSelector, handleCardClick) {
-    this._text = data.text;
+    this._name = data.name;
     this._link = data.link;
     this._cardSelector = cardSelector;
     this._handleCardClick = handleCardClick;
@@ -19,8 +19,8 @@ export class Card {
     const cardsImageElement = this._element.querySelector(".element__image");
     const cardsTextElement = this._element.querySelector(".element__text");
     cardsImageElement.src = this._link
-    cardsImageElement.alt = this._text;
-    cardsTextElement.textContent = this._text;
+    cardsImageElement.alt = this._name;
+    cardsTextElement.textContent = this._name;
     this._setEventListeners();
     return this._element;
   };
