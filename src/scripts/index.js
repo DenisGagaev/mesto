@@ -73,12 +73,16 @@ const section = new Section(
 const addNewCardPopup = new PopupWithForm(popupCard, {
   formSubmitCallBack: (data) => {
     const item = {
-      text: data.photoText,
+      name: data.photoText,
       link: data.photoLink,
     };
-    section.addItem(createCard(item), true);
-    addNewCardPopup.close();
-    console.log()
+    api
+      .sendCard(item)
+      .then((res) => {
+        section.addItem(createCard(res), true);
+        addNewCardPopup.close();
+      })
+      .catch((err) => console.log(err))
   },
 });
 addNewCardPopup.setEventListeners();
@@ -135,6 +139,6 @@ Promise.all(initialData)
     userId = userData._id;
     userInfo.setUserInfo(userData);
     userInfo.setAvatarInfo(userData);
-    section.renderItems(cards);
+    section.renderItems(cards.reverse());
   })
   .catch((err) => console.log(err));

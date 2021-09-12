@@ -1,5 +1,11 @@
 .popup__set {
-    margin: 0;
-    padding: 0;
-    border: none;
+  margin: 0 0 18px;
+  padding: 0;
+  border: none;
+}
+
+@media (max-width: 450px) {
+  .popup__set {
+    margin: 0 0 15px;
   }
+}
