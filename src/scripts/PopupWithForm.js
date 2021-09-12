@@ -5,13 +5,13 @@ export default class PopupWithForm extends Popup {
     super(popupSelector);
     this._formSubmitCallBack = formSubmitCallBack;
     this._formSubmit = this._formSubmit.bind(this);
-  
     this._form = this._popupSelector.querySelector(".popup__form");
     this._inputs = Array.from(this._form.querySelectorAll(".popup__input"));
+    this._submitButton = this._form.querySelector(".popup__button");
   }
 
   _formSubmit() {
-    this._formSubmitCallBack(this._getInputValues());
+    this._formSubmitCallBack(this._getInputValues(), this._submitButton);
   }
 
   _getInputValues() {

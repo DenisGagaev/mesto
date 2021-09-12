@@ -1,7 +1,7 @@
 export default class Api {
   constructor(data) {
-    this._baseUrl = data.serverUrl; //url сервера
-    this._token = data.token; //токен пользователя
+    this._baseUrl = data.serverUrl;
+    this._token = data.token;
   }
   // проверка
   _requestResult(res) {
@@ -70,6 +70,33 @@ export default class Api {
         name: data.name,
         link: data.link,
       }),
+    }).then((res) => this._requestResult(res));
+  }
+  // Запрос на удаление карточки
+  deleteCard(data) {
+    return fetch(`${this._baseUrl}cards/${data}`, {
+      method: "DELETE",
+      headers: {
+        authorization: this._token,
+      },
+    }).then((res) => this._requestResult(res));
+  }
+  // Запрос на добавление лайка карточке
+  addCardLike(data) {
+    return fetch(`${this._baseUrl}cards/likes/${data}`, {
+      method: "PUT",
+      headers: {
+        authorization: this._token,
+      },
+    }).then((res) => this._requestResult(res));
+  }
+  // Запрос на удаление лайка карточки
+  deleteCardLike(data) {
+    return fetch(`${this._baseUrl}cards/likes/${data}`, {
+      method: "DELETE",
+      headers: {
+        authorization: this._token,
+      },
     }).then((res) => this._requestResult(res));
   }
 }

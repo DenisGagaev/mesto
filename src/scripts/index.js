@@ -6,6 +6,7 @@ import PopupWithForm from "./PopupWithForm.js";
 import PopupWithImage from "./PopupWithImage.js";
 import '../pages/index.css';
 import Api from "./Api.js"
+import PopupDeleteCard from "./popupDeleteCard.js";
 import {
   popupProfile,
   popupCard,
@@ -19,7 +20,8 @@ import {
   containerPhoto,
   buttonEditProfile,
   buttonAddPhoto,
-  popupAvatar
+  popupAvatar,
+  popupDelete
 } from "./constants.js";
 
 //Api
@@ -27,8 +29,10 @@ const api = new Api({
   serverUrl: "https://mesto.nomoreparties.co/v1/cohort-27/",
   token: "8747a9a0-014b-48d6-8e47-516b00c90197"
 });
-
+// переменные для API
 let userId;
+let addCardLike;
+let deleteCardLike;
 
 const initialData = [api.getUserInfo(), api.getInitialCards()]
 
@@ -39,6 +43,16 @@ const avatarPopupValidation = new FormValidator(enableValidation, popupAvatar);
 editPopupValidation.enableValidation();
 addPopupValidation.enableValidation();
 avatarPopupValidation.enableValidation();
+
+const addLoading = (evt) => {
+  evt.textContent = "Сохранение...";
+}
+const removeLoading = (evt) => {
+  evt.textContent = "Сохранить";
+}
+const removeLoadingCard = (evt) => {
+  evt.textContent = "Создать";
+}
 
 // Открыть попап с фото
 const openImagePopup = (evt) => {
@@ -53,12 +67,41 @@ const openImagePopup = (evt) => {
 const popupWithImage = new PopupWithImage(popupImage);
 popupWithImage.setEventListeners();
 
+//функия удаления
+const deleteCard = (data) => {
+  deleteCardPopup.data = data;
+  deleteCardPopup.open();
+};
+
 // Генерация карточек
-const createCard = (evt) => {
-  const card = new Card(evt, "#cardTemplate", openImagePopup);
-  const cardElement = card.generateCard(evt);
+const createCard = (data) => {
+  const card = new Card(
+    data,
+    "#cardTemplate",
+    userId,
+    openImagePopup,
+    deleteCard,
+    (addCardLike = (data) => {
+      return api.addCardLike(data);
+    }),
+    (deleteCardLike = (data) => {
+      return api.deleteCardLike(data);
+    })
+  );
+  const cardElement = card.generateCard(data);
   return cardElement;
 };
+const deleteCardPopup = new PopupDeleteCard(popupDelete, {
+  formSubmitCallBack: (data) => {
+    api
+      .deleteCard(data.cardId)
+      .then(() => {
+        deleteCardPopup.close();
+      })
+      .catch((err) => console.log(err));
+  },
+});
+deleteCardPopup.setEventListeners();
 
 const section = new Section(
   {
@@ -71,7 +114,8 @@ const section = new Section(
 
 // Попап добавления фото
 const addNewCardPopup = new PopupWithForm(popupCard, {
-  formSubmitCallBack: (data) => {
+  formSubmitCallBack: (data, button) => {
+    addLoading(button)
     const item = {
       name: data.photoText,
       link: data.photoLink,
@@ -83,6 +127,9 @@ const addNewCardPopup = new PopupWithForm(popupCard, {
         addNewCardPopup.close();
       })
       .catch((err) => console.log(err))
+      .finally(() => {
+        removeLoading(button)
+      });
   },
 });
 addNewCardPopup.setEventListeners();
@@ -91,7 +138,8 @@ addNewCardPopup.setEventListeners();
 const userInfo = new UserInfo({ profileName, profileText, profileAvatar });
 
 const editPopup = new PopupWithForm(popupProfile, {
-  formSubmitCallBack: (data) => {
+  formSubmitCallBack: (data, button) => {
+    addLoading(button)
     api
       .editProfile(data)
       .then((res) => {
@@ -99,13 +147,17 @@ const editPopup = new PopupWithForm(popupProfile, {
         editPopup.close();
       })
       .catch((err) => console.log(err))
+      .finally(() => {
+        removeLoadingCard(button)
+      });
   },
 });
 editPopup.setEventListeners();
 
-//Замена аватарки
+// Замена аватарки
 const editAvatarProfile = new PopupWithForm(popupAvatar, {
-  formSubmitCallBack: (data) => {
+  formSubmitCallBack: (data, button) => {
+    addLoading(button)
     api
       .editAvatar(data)
       .then((res) => {
@@ -113,6 +165,9 @@ const editAvatarProfile = new PopupWithForm(popupAvatar, {
         editAvatarProfile.close();
       })
       .catch((err) => console.log(err))
+      .finally(() => {
+        removeLoading(button)
+      });
   },
 });
 editAvatarProfile.setEventListeners();
