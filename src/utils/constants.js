@@ -1,9 +1,7 @@
 export const formElementProfile = document.querySelector('#popup__form-profile');
 export const popupProfile = document.querySelector('#popup__Profile');
 export const popupCard = document.querySelector('#popup__card');
-export const popupImage = document.querySelector('#popap__image');
 export const popupAvatar = document.querySelector('#popap__avatar');
-export const popupDelete = document.querySelector('#popap__deleteCard');
 export const inputNameProfile = formElementProfile.querySelector("#popup__name-input");
 export const inputTextProfile = formElementProfile.querySelector("#popup__text-input");
 export const profileName = document.querySelector('.profile__name');

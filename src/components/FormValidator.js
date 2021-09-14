@@ -44,14 +44,14 @@ export class FormValidator {
     });
   }
   // Переключение кнопок
-  _toggleButtonState() {
+  _disableButton() {
     this._buttonElement.setAttribute("disabled", true);
     this._buttonElement.classList.add(this._inactiveButtonClass);
   }
   // Переключение кнопок
   toggleSubmit() {
     if (this._hasInvalidInput()) {
-      this._toggleButtonState();
+      this._disableButton();
     } else {
       this._buttonElement.removeAttribute("disabled", true);
       this._buttonElement.classList.remove(this._inactiveButtonClass);
@@ -81,6 +81,6 @@ export class FormValidator {
       this._hideInputError(inputElement)
     });
     //пришлось сильно подумать! Но оказывается все проще, чем думается)))
-    this._toggleButtonState();
+    this._disableButton();
   };
 }

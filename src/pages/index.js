@@ -1,16 +1,15 @@
-import { Card } from "./Card.js";
-import { FormValidator, enableValidation } from "./FormValidator.js"
-import Section from "./Section.js";
-import UserInfo from "./UserInfo.js";
-import PopupWithForm from "./PopupWithForm.js";
-import PopupWithImage from "./PopupWithImage.js";
-import '../pages/index.css';
-import Api from "./Api.js"
-import PopupDeleteCard from "./popupDeleteCard.js";
+import './index.css';
+import { Card } from "../components/Card.js";
+import { FormValidator, enableValidation } from "../components/FormValidator.js"
+import Section from "../components/Section.js";
+import UserInfo from "../components/UserInfo.js";
+import PopupWithForm from "../components/PopupWithForm.js";
+import PopupWithImage from "../components/PopupWithImage.js";
+import Api from "../components/Api.js"
+import PopupWithConfirmation from "../components/PopupWithConfirmation.js";
 import {
   popupProfile,
   popupCard,
-  popupImage,
   inputNameProfile,
   inputTextProfile,
   profileName,
@@ -21,8 +20,7 @@ import {
   buttonEditProfile,
   buttonAddPhoto,
   popupAvatar,
-  popupDelete
-} from "./constants.js";
+} from "../utils/constants.js";
 
 //Api
 const api = new Api({
@@ -44,14 +42,14 @@ editPopupValidation.enableValidation();
 addPopupValidation.enableValidation();
 avatarPopupValidation.enableValidation();
 
-const addLoading = (evt) => {
-  evt.textContent = "Сохранение...";
+const addLoading = (button) => { 
+  button.textContent = "Сохранение...";
 }
-const removeLoading = (evt) => {
-  evt.textContent = "Сохранить";
+const removeLoading = (button) => {
+  button.textContent = "Сохранить";
 }
-const removeLoadingCard = (evt) => {
-  evt.textContent = "Создать";
+const removeLoadingCard = (button) => {
+  button.textContent = "Создать";
 }
 
 // Открыть попап с фото
@@ -64,7 +62,7 @@ const openImagePopup = (evt) => {
   };
   popupWithImage.open(data);
 };
-const popupWithImage = new PopupWithImage(popupImage);
+const popupWithImage = new PopupWithImage('#popap__image');
 popupWithImage.setEventListeners();
 
 //функия удаления
@@ -91,11 +89,12 @@ const createCard = (data) => {
   const cardElement = card.generateCard(data);
   return cardElement;
 };
-const deleteCardPopup = new PopupDeleteCard(popupDelete, {
+const deleteCardPopup = new PopupWithConfirmation('#popap__deleteCard', {
   formSubmitCallBack: (data) => {
     api
       .deleteCard(data.cardId)
       .then(() => {
+        data.card.remove();
         deleteCardPopup.close();
       })
       .catch((err) => console.log(err));
@@ -113,7 +112,7 @@ const section = new Section(
 );
 
 // Попап добавления фото
-const addNewCardPopup = new PopupWithForm(popupCard, {
+const addNewCardPopup = new PopupWithForm('#popup__card', {
   formSubmitCallBack: (data, button) => {
     addLoading(button)
     const item = {
@@ -137,7 +136,7 @@ addNewCardPopup.setEventListeners();
 // Попап редактирования профиля
 const userInfo = new UserInfo({ profileName, profileText, profileAvatar });
 
-const editPopup = new PopupWithForm(popupProfile, {
+const editPopup = new PopupWithForm('#popup__Profile', {
   formSubmitCallBack: (data, button) => {
     addLoading(button)
     api
@@ -155,7 +154,7 @@ const editPopup = new PopupWithForm(popupProfile, {
 editPopup.setEventListeners();
 
 // Замена аватарки
-const editAvatarProfile = new PopupWithForm(popupAvatar, {
+const editAvatarProfile = new PopupWithForm('#popap__avatar', {
   formSubmitCallBack: (data, button) => {
     addLoading(button)
     api
@@ -186,9 +185,9 @@ buttonAddPhoto.addEventListener("click", () => {
 });
 editAvatar.addEventListener("click", () => {
   editAvatarProfile.open();
-  avatarPopupValidation.enableValidation();
+  avatarPopupValidation.hideAllErrors();
 })
-//данные с сервера для мзначальной отрисовки
+//данные с сервера для изначальной отрисовки
 Promise.all(initialData)
   .then(([userData, cards]) => {
     userId = userData._id;

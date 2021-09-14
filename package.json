@@ -1,11 +1,11 @@
 {
   "name": "mesto",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "Yandex Practicum training project",
   "main": "index.js",
   "scripts": {
     "build": "webpack --mode production",
-    "serve": "webpack-dev-server --mode development --config webpack.config.js",
+    "dev": "webpack-dev-server --mode development --config webpack.config.js",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
